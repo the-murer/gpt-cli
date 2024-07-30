@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { TextField, Button, Container, Grid, CircularProgress } from "@mui/material";
 import Message from "./Message";
 import { Trash } from "lucide-react";
@@ -24,6 +24,13 @@ const ChatInterface = ({ openAiClient, activeAssistant, setActiveAssistant, setA
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
+
+  const initChatBot = useCallback(async () => {
+    const thread = await openAiClient.beta.threads.create();
+    localStorage.setItem(`${activeAssistant}:info`, JSON.stringify({ thread, storedMessages: [] }));
+    setThread(thread);
+  }, [openAiClient, activeAssistant]);
+  
   
   useEffect(() => {
     scrollToBottom();
@@ -43,13 +50,7 @@ const ChatInterface = ({ openAiClient, activeAssistant, setActiveAssistant, setA
     } else {
       initChatBot();
     }
-  }, [openAiClient, activeAssistant]);
-
-  const initChatBot = async () => {
-    const thread = await openAiClient.beta.threads.create();
-    localStorage.setItem(`${activeAssistant}:info`, JSON.stringify({ thread, storedMessages: [] }))
-    setThread(thread);
-  };
+  }, [openAiClient, activeAssistant, initChatBot]);
 
   const handleSendMessage = async () => {
     setIsWaiting(true);
