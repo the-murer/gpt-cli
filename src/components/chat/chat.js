@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { TextField, Button, Container, Grid, CircularProgress } from "@mui/material";
 import Message from "./Message";
 import { Trash } from "lucide-react";
+import { Form, InputGroup } from "react-bootstrap";
 
 function generateRandomString() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
@@ -81,7 +82,7 @@ const ChatInterface = ({ openAiClient, activeAssistant, setActiveAssistant, setA
     }
   };
 
-  const removeAssitant = async () => {
+  const removeAssistant = async () => {
     const assistantInfo = localStorage.getItem(`${activeAssistant}:info`);
     if (assistantInfo?.length) {
       const newAssistants = assistants.filter((assistant) => assistant.assistantId !== activeAssistant);
@@ -104,7 +105,7 @@ const ChatInterface = ({ openAiClient, activeAssistant, setActiveAssistant, setA
     <Container className="sm-9">
       <h2>
         {assistants?.find((assistant) => assistant.assistantId === activeAssistant)?.name}
-      <Button color="error" onClick={removeAssitant}>
+      <Button color="error" onClick={removeAssistant}>
         <Trash />
       </Button>
       </h2>

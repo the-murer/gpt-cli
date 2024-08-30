@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Nav, Navbar } from "react-bootstrap";
 import { Box, Typography, Modal } from "@mui/material";
 
 import logo from '../../logo.png';
+import ConfigModal from "../assistants/modal";
+import KeyModal from "../assistants/key_modal";
+import AssistantModal from "./assistants_modal";
+import ImagesModal from "./images_modal";
 
 const style = {
   position: 'absolute',
@@ -17,11 +21,50 @@ const style = {
   p: 4,
 };
 
-export default function NavbarComponent() {
-  const [open, setOpen] = React.useState(false);
+export default function NavbarComponent({ openAiClient, assistants, setAssitants, setactiveAssistant }) {
+  const [openInfo, setOpenInfo] = useState(false);
+  const [isOpenConfig, setIsOpenConfig] = useState(false);
+  const [isOpenKey, setIsOpenKey] = useState(false);
+  const [isOpenAssistant, setOpenAssistant] = useState(false);
+  const [isOpenImage, setOpenImage] = useState(false);
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpenConfig = () => setIsOpenConfig(true);
+  const handleCloseConfig = () => setIsOpenConfig(false);
+
+  const handleOpenKey = () => setIsOpenKey(true);
+  const handleCloseKey = () => setIsOpenKey(false);
+  
+  const handleOpenInfo = () => setOpenInfo(true);
+  const handleCloseInfo = () => setOpenInfo(false);
+  
+  const handleOpenAssistant = () => setOpenAssistant(true);
+  const handleCloseAssistant = () => setOpenAssistant(false);
+  
+  const handleOpenImage = () => setOpenImage(true);
+  const handleCloseImage = () => setOpenImage(false);
+
+
+  const createChat = async (name, model, instructions) => {
+    localStorage.getItem(assistants);
+    if (!openAiClient) return;
+    try {
+      
+      const assistant = await openAiClient.beta.assistants.create({
+        name,
+        instructions,
+        model,
+        tools: [{ type: "code_interpreter" }],
+      });
+      console.log("🚀 ~ createChat ~ name:", name)
+      const newAssitants = [...assistants, { assistantId: assistant.id, name, model, instructions }];
+      setAssitants(newAssitants)
+      localStorage.setItem('assistants',JSON.stringify(newAssitants));
+      console.log("🚀 ~ createChat ~ assistant:", assistant)
+      setactiveAssistant(assistant.id)
+    } catch (error) {
+      console.error(error.message); 
+    }
+  }
 
   return (
     <Navbar bg="black" className="mb-4" expand="lg">
@@ -32,12 +75,28 @@ export default function NavbarComponent() {
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
-          <Nav.Link onClick={handleOpen} className="text-light">Info</Nav.Link>
+          <Nav.Link onClick={handleOpenConfig} className="text-light">Create Assistant</Nav.Link>
+        </Nav>
+        <Nav className="mr-auto">
+          <Nav.Link onClick={handleOpenKey} className="text-light">Configure</Nav.Link>
+        </Nav>
+        <Nav className="mr-auto">
+          <Nav.Link onClick={handleOpenImage} className="text-light">Images</Nav.Link>
+        </Nav>
+        {window.innerWidth < 967 && (<Nav className="mr-auto">
+          <Nav.Link onClick={handleOpenAssistant} className="text-light">Assistant</Nav.Link>
+        </Nav>)}
+        <Nav className="mr-auto">
+          <Nav.Link onClick={handleOpenInfo} className="text-light">Info</Nav.Link>
         </Nav>
       </Navbar.Collapse>
+      <ConfigModal onCreate={createChat} isOpen={isOpenConfig} handleClose={handleCloseConfig} />
+      <KeyModal isOpen={isOpenKey} handleClose={handleCloseKey} />
+      <AssistantModal assistants={assistants} setactiveAssistant={setactiveAssistant} isOpen={isOpenAssistant} handleClose={handleCloseAssistant} />
+      <ImagesModal openAiClient={openAiClient} isOpen={isOpenImage} handleClose={handleCloseImage} /> 
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={openInfo}
+        onClose={handleCloseInfo}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >

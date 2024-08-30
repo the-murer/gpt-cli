@@ -18,28 +18,24 @@ const style = {
   p: 4,
 };
 
-export default function ConfigModal({ onCreate }) {
+export default function ConfigModal({ onCreate, isOpen, handleClose }) {
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState('');
   const [instructions, setInstructions] = React.useState('');
   const [model, setModel] = React.useState('gpt-4o-mini');
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
   const createAssistant = () => {
+    onCreate(name, model, instructions);
     setModel('gpt-4o-mini');
     setInstructions('');
     setName('');
-    onCreate(name, instructions, model);
     handleClose();
   }
 
   return (
     <div>
-      <Button onClick={handleOpen}>Create Assitant</Button>
       <Modal
-        open={open}
+        open={isOpen}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"

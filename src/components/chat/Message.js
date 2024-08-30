@@ -1,6 +1,4 @@
-// src/components/Message.js
 import React from 'react';
-// import MessageDto  from "./MessageDto.js";
 
 const Message = ({ message }) => {
   return (

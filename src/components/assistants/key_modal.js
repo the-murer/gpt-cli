@@ -4,7 +4,6 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { TextField } from '@mui/material';
-import { Bolt } from 'lucide-react';
 
 const style = {
   position: 'absolute',
@@ -19,12 +18,8 @@ const style = {
   p: 4,
 };
 
-export default function KeyModal({ onCreate }) {
-  const [open, setOpen] = React.useState(false);
+export default function KeyModal({ isOpen, handleClose }) {
   const [key, setKey] = React.useState(localStorage.getItem('apiKey'));
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
   const setApiKey = () => {
     localStorage.setItem('apiKey', key);
@@ -33,11 +28,8 @@ export default function KeyModal({ onCreate }) {
 
   return (
     <div>
-      <Button size='small' variant='outlined' onClick={handleOpen}>
-        <Bolt />
-      </Button>
       <Modal
-        open={open}
+        open={isOpen}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
