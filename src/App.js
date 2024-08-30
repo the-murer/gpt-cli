@@ -2,7 +2,6 @@ import ChatInterface from './components/chat/chat';
 import Assistants from './components/assistants/list';
 import { useEffect, useState } from 'react';
 import OpenAI from 'openai';
-import { Container as BsContainer } from 'react-bootstrap';
 import { Container } from '@mui/material';
 import NavbarComponent from './components/header';
 import 'bootstrap/dist/css/bootstrap.min.css';

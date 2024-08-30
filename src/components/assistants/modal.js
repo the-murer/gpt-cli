@@ -19,7 +19,6 @@ const style = {
 };
 
 export default function ConfigModal({ onCreate, isOpen, handleClose }) {
-  const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState('');
   const [instructions, setInstructions] = React.useState('');
   const [model, setModel] = React.useState('gpt-4o-mini');

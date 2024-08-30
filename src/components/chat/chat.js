@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { TextField, Button, Container, Grid, CircularProgress } from "@mui/material";
 import Message from "./Message";
 import { Trash } from "lucide-react";
-import { Form, InputGroup } from "react-bootstrap";
 
 function generateRandomString() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
