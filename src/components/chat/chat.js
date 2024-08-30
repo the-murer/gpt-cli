@@ -1,7 +1,7 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { TextField, Button, Container, Grid, CircularProgress } from "@mui/material";
-import Message from "./Message";
+import Message from "./message";
 import { Trash } from "lucide-react";
 
 function generateRandomString() {
