@@ -48,13 +48,13 @@ const Message = ({ message }) => {
             value={part.content}
             theme="vs-dark"
             height="200px"
-            
             />
           <Button
             style={{ width: '110px', marginTop: '5px' }}
             variant='outlined'
             onClick={() => {
               setCopied(index)
+              navigator.clipboard.writeText(part.content)
               setTimeout(() => setCopied(null), 5000)
             }}
           >
